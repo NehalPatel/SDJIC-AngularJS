@@ -10,12 +10,11 @@
     <title>AngularJS - SDJIC</title>
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-    <!-- Custom styles for this template -->
-    <link href="pricing.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
 </head>
 
-<body>
+<body ng-app="myApp">
     <div class="container py-3">
         <header>
             <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -24,59 +23,99 @@
                 </a>
 
                 <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                    <a class="me-3 py-2 text-dark text-decoration-none" href="/index.html">Home</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="index.html">Home</a>
                     <a class="me-3 py-2 text-dark text-decoration-none" href="#">About</a>
                     <a class="me-3 py-2 text-dark text-decoration-none" href="#">Contact Us</a>
                     <a class="py-2 text-dark text-decoration-none" href="angluar.html">AngularJS</a>
                 </nav>
             </div>
-
-            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-                <h1 class="display-4 fw-normal">AngularJS</h1>
-                <p class="fs-5">AngularJS is a JavaScript framework. It can be added to an HTML page with a
-                    &lt;script&gt; tag.</p>
-                <p class="fs-5">AngularJS extends HTML attributes with Directives, and binds data to HTML
-                    with Expressions.</p>
-            </div>
         </header>
 
         <main>
-
-        </main>
-
-        <footer class="pt-4 my-md-5 pt-md-5 border-top">
             <div class="row">
-                <div class="col-12 col-md">
-                    <small class="d-block mb-3 text-muted">&copy; 2023</small>
+                <div class="col-md-3">
+                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+                        <a href="/"
+                            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                            <span class="fs-4">Learn AngularJS</span>
+                        </a>
+                        <hr />
+                        <ul class="nav nav-pills flex-column mb-auto">
+                            <li class="nav-item">
+                                <a href="#/!" ng-class="{'nav-link':true, 'active' : isActive}">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#!introduction" ng-class="{'nav-link link-dark':true, 'active' : isActive}">
+                                    Introduction
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#!directive" class="nav-link link-dark">
+                                    Directives
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#!expression" class="nav-link link-dark">
+                                    Expressions
+                                </a>
+                            </li>
+                        </ul>
+                        <hr />
+                        <div class="dropdown">
+                            <a href="/" class="d-flex align-items-center text-decoration-none">
+                                <img src="https://avatars.githubusercontent.com/u/1838272?v=4" alt="" width="32"
+                                    height="32" class="rounded-circle me-2" />
+                                <strong>Nehal Patel</strong>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-4 col-md">
-                    <h5>Links</h5>
-                    <ul class="list-unstyled text-small">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-                    </ul>
-                </div>
-                <div class="col-4 col-md">
-                    <h5>Resources</h5>
-                    <ul class="list-unstyled text-small">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-                    </ul>
-                </div>
-                <div class="col-4 col-md">
-                    <h5>About</h5>
-                    <ul class="list-unstyled text-small">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy & Terms</a>
-                        </li>
-                    </ul>
+                <div class="col-md-9">
+
+                    <ng-view></ng-view>
+
                 </div>
             </div>
-        </footer>
+
+        </main>
     </div>
+
+    <script>
+        var app = angular.module("myApp", ["ngRoute"]);
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when("/", {
+                    templateUrl: "home.html",
+                    controller: "homeCtrl"
+                })
+                .when("/introduction", {
+                    templateUrl: "introduction.html",
+                    controller: "introductionCtrl"
+                })
+                .when("/directive", {
+                    templateUrl: "directive.html"
+                })
+                .when("/expression", {
+                    templateUrl: "expression.html"
+                });
+        });
+
+        app.controller("homeCtrl", function ($scope) {
+            $scope.msg = "Home Controller";
+            $scope.isActive = function (route) {
+                console.log(route)
+                return route === $location.path();
+            };
+        });
+        app.controller("introductionCtrl", function ($scope) {
+            $scope.msg = "Introduction Controller";
+            $scope.isActive = function (route) {
+                return route === $location.path();
+            };
+        });
+    </script>
 </body>
 
 </html>
